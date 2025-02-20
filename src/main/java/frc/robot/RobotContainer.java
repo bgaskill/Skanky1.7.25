@@ -14,16 +14,24 @@ import edu.wpi.first.math.trajectory.Trajectory;
 import edu.wpi.first.math.trajectory.TrajectoryConfig;
 import edu.wpi.first.math.trajectory.TrajectoryGenerator;
 import edu.wpi.first.wpilibj.XboxController;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj.PS4Controller.Button;
 import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.math.geometry.Transform2d;
+
+import com.pathplanner.lib.auto.AutoBuilder;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -34,10 +42,12 @@ import java.util.List;
 public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  private final SendableChooser<Command> autoChooser;
 
   // The driver's controller
-  XboxController m_driverController = new XboxController(OIConstants.kDriverControllerPort);
-
+  Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
+  XboxController m_OperatorController = new XboxController(OIConstants.kOperatorControllerPort);
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
@@ -51,11 +61,20 @@ public class RobotContainer {
         // Turning is controlled by the X axis of the right stick.
         new RunCommand(
             () -> m_robotDrive.drive(
-                -MathUtil.applyDeadband(m_driverController.getLeftY(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getLeftX(), OIConstants.kDriveDeadband),
-                -MathUtil.applyDeadband(m_driverController.getRightX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getY(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getX(), OIConstants.kDriveDeadband),
+                -MathUtil.applyDeadband(m_driverController.getTwist(), OIConstants.kDriveDeadband),
                 true),
             m_robotDrive));
+    m_shooter.setDefaultCommand(
+      new RunCommand(
+      () -> m_shooter.doStuff(m_OperatorController.getRawAxis(3))
+      , m_shooter)
+    );
+    // Build an auto chooser. This will use Commands.none() as the default option.
+    autoChooser = AutoBuilder.buildAutoChooser("TEST");
+    
+    //SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   /**
@@ -72,7 +91,40 @@ public class RobotContainer {
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
             m_robotDrive));
-  }
+ 
+    new JoystickButton(m_driverController, 7)
+            .whileTrue(new RunCommand(
+                () -> m_robotDrive.zeroHeading(),
+                m_robotDrive));
+
+    new JoystickButton(m_driverController, 13)
+    .onTrue(new InstantCommand(
+      () -> {double[] LLPose = LimelightHelpers.getTargetPose_RobotSpace("limelight");
+      System.out.println("Error");
+      SmartDashboard.putNumber("Distance", LLPose[0]); SmartDashboard.putNumber("DistY", LLPose[1]);
+      SmartDashboard.putNumber("RotationL", LLPose[3]);
+      SmartDashboard.putNumber("hello", LLPose[2]);
+      Pose2d LLPose2d = new Pose2d(LLPose[2], LLPose[0], Rotation2d.fromDegrees(LLPose[3]));
+      AutoBuilder.followPath(
+        PathplannerUTILS.createLLPath(
+          m_robotDrive.getPose(), 
+          m_robotDrive.getPose().plus(new Transform2d(LLPose2d.getX()-0.2, LLPose2d.getY(), Rotation2d.fromDegrees(0))))
+          ).schedule();
+        }));
+
+        new JoystickButton(m_driverController, 1)
+        .onTrue(new RunCommand(
+          () -> m_shooter.doStuff(0.5), 
+        m_shooter).withTimeout(0.75));
+
+        new JoystickButton(m_driverController, 2)
+        .onTrue(new RunCommand(
+          () -> m_shooter.trough(1), 
+        m_shooter).withTimeout(0.75));
+ 
+ 
+          }
+
 
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.
@@ -80,43 +132,7 @@ public class RobotContainer {
    * @return the command to run in autonomous
    */
   public Command getAutonomousCommand() {
-    // Create config for trajectory
-    TrajectoryConfig config = new TrajectoryConfig(
-        AutoConstants.kMaxSpeedMetersPerSecond,
-        AutoConstants.kMaxAccelerationMetersPerSecondSquared)
-        // Add kinematics to ensure max speed is actually obeyed
-        .setKinematics(DriveConstants.kDriveKinematics);
-
-    // An example trajectory to follow. All units in meters.
-    Trajectory exampleTrajectory = TrajectoryGenerator.generateTrajectory(
-        // Start at the origin facing the +X direction
-        new Pose2d(0, 0, new Rotation2d(0)),
-        // Pass through these two interior waypoints, making an 's' curve path
-        List.of(new Translation2d(1, 1), new Translation2d(2, -1)),
-        // End 3 meters straight ahead of where we started, facing forward
-        new Pose2d(3, 0, new Rotation2d(0)),
-        config);
-
-    var thetaController = new ProfiledPIDController(
-        AutoConstants.kPThetaController, 0, 0, AutoConstants.kThetaControllerConstraints);
-    thetaController.enableContinuousInput(-Math.PI, Math.PI);
-
-    SwerveControllerCommand swerveControllerCommand = new SwerveControllerCommand(
-        exampleTrajectory,
-        m_robotDrive::getPose, // Functional interface to feed supplier
-        DriveConstants.kDriveKinematics,
-
-        // Position controllers
-        new PIDController(AutoConstants.kPXController, 0, 0),
-        new PIDController(AutoConstants.kPYController, 0, 0),
-        thetaController,
-        m_robotDrive::setModuleStates,
-        m_robotDrive);
-
-    // Reset odometry to the starting pose of the trajectory.
-    m_robotDrive.resetOdometry(exampleTrajectory.getInitialPose());
-
-    // Run path following command, then stop at the end.
-    return swerveControllerCommand.andThen(() -> m_robotDrive.drive(0, 0, 0, false));
+    return autoChooser.getSelected();
   }
+
 }

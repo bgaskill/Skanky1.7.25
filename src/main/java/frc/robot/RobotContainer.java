@@ -75,6 +75,9 @@ public class RobotContainer {
       m_shooter)
     );
 
+  
+
+
     m_elevator.setDefaultCommand(
       new RunCommand(
         () -> m_elevator.elevatorControl(m_OperatorController.getLeftY()),
@@ -136,8 +139,20 @@ public class RobotContainer {
           () -> m_elevator.elevatorControl(m_OperatorController.getLeftY()),
           m_elevator));
  
+          new JoystickButton(m_OperatorController, 6)
+          .whileTrue(new RunCommand(
+           () ->m_shooter.laserIntake(.2), 
+          m_shooter) );
+ 
+          
+
+          new JoystickButton(m_OperatorController, 5)
+          .whileTrue(new RunCommand(
+           () ->m_shooter.reverse(.2), 
+          m_shooter) );
  
           }
+
 
 
   /**

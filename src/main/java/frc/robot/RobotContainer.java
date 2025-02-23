@@ -21,10 +21,12 @@ import frc.robot.Constants.AutoConstants;
 import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
+import frc.robot.subsystems.ElevatorSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
+import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
 import java.util.List;
@@ -43,6 +45,7 @@ public class RobotContainer {
   // The robot's subsystems
   private final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
+  private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   private final SendableChooser<Command> autoChooser;
 
   // The driver's controller
@@ -68,8 +71,14 @@ public class RobotContainer {
             m_robotDrive));
     m_shooter.setDefaultCommand(
       new RunCommand(
-      () -> m_shooter.doStuff(m_OperatorController.getRawAxis(3))
-      , m_shooter)
+      () -> m_shooter.shoot(m_OperatorController.getRawAxis(3)),
+      m_shooter)
+    );
+
+    m_elevator.setDefaultCommand(
+      new RunCommand(
+        () -> m_elevator.elevatorControl(m_OperatorController.getLeftY()),
+        m_elevator)
     );
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser("TEST");
@@ -114,13 +123,18 @@ public class RobotContainer {
 
         new JoystickButton(m_driverController, 1)
         .onTrue(new RunCommand(
-          () -> m_shooter.doStuff(0.5), 
+          () -> m_shooter.shoot(0.5), 
         m_shooter).withTimeout(0.75));
 
         new JoystickButton(m_driverController, 2)
         .onTrue(new RunCommand(
           () -> m_shooter.trough(1), 
         m_shooter).withTimeout(0.75));
+
+        new JoystickButton(m_OperatorController, XboxController.Axis.kLeftY.value)
+        .whileTrue(new RunCommand(
+          () -> m_elevator.elevatorControl(m_OperatorController.getLeftY()),
+          m_elevator));
  
  
           }

@@ -66,6 +66,14 @@ public final class Constants {
 
 
   }
+  public static final class ElevatorConstants {
+    //SPARK MAX CAN IDs
+    public static final int kLeftElevatorCanId = 22;
+    public static final int kRightElevatorCanId = 21;
+
+
+  }
+
 
   public static final class ModuleConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,

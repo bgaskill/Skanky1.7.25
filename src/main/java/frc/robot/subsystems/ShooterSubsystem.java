@@ -11,13 +11,13 @@ public class ShooterSubsystem extends SubsystemBase{
     SparkMax m_leftShooter = new SparkMax(ShooterConstants.kLeftShooterCanId, MotorType.kBrushless);
     SparkMax m_rightShooter = new SparkMax(ShooterConstants.kRightShooterCanId, MotorType.kBrushless);
 
-    public void doStuff(double speed){
+    public void shoot(double speed){
         m_leftShooter.set(speed);
         m_rightShooter.set(-speed);
     }
 
     public void trough(double speed){
-        m_leftShooter.set(speed*0.5);
-        m_rightShooter.set(-speed*0.1);
+        m_leftShooter.set(speed);
+        m_rightShooter.set(-speed*0.2);
     }
 }

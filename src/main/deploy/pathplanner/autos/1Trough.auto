@@ -7,7 +7,13 @@
         {
           "type": "path",
           "data": {
-            "pathName": "New Path"
+            "pathName": "toCenter"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "troughShot"
           }
         }
       ]

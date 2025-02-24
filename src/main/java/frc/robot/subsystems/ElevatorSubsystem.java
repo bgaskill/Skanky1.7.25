@@ -29,8 +29,10 @@ public class ElevatorSubsystem extends SubsystemBase {
   
   /** Creates a new Elevator. */
   public ElevatorSubsystem() {
+    // sets falcon 500 (21) to follow 22
     talonElevator2.setControl(new StrictFollower(ElevatorConstants.kLeftElevatorCanId));
     
+    //elevator PID tuning
     var slot0Configs =new Slot0Configs();
     slot0Configs.kP= 2.4;
     slot0Configs.kI= 0;
@@ -39,8 +41,9 @@ public class ElevatorSubsystem extends SubsystemBase {
     slot0Configs.kV= .12;  //velocity feedforwar
     slot0Configs.kA= .01;   //Acceleration feedforward
     
-    var talonElevatorConfig =new TalonFXConfiguration();
+    var talonElevatorConfig = new TalonFXConfiguration();
     var ElevatorMM = talonElevatorConfig.MotionMagic;
+    //Motion magic settings
     ElevatorMM.MotionMagicCruiseVelocity = 200;
     ElevatorMM.MotionMagicAcceleration = 160;
     ElevatorMM.MotionMagicJerk = 1160;

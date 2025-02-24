@@ -32,7 +32,7 @@ public class Robot extends TimedRobot {
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
     CameraServer.startAutomaticCapture();
-  CanBridge.runTCP();
+    CanBridge.runTCP(); // allows grapplehook to talk to rio
   }
 
   /**
@@ -71,7 +71,9 @@ public class Robot extends TimedRobot {
      */
 
     // schedule the autonomous command (example)
-    if (m_autonomousCommand != null) {
+    if (m_autonomousCommand != null) { 
+      m_robotContainer.m_robotDrive.zeroHeading();// reset gyro at beggining of auto
+
       m_autonomousCommand.schedule();
     }
   }
@@ -87,6 +89,7 @@ public class Robot extends TimedRobot {
     // continue until interrupted by another command, remove
     // this line or comment it out.
     if (m_autonomousCommand != null) {
+     
       m_autonomousCommand.cancel();
     }
   }

@@ -39,6 +39,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.math.geometry.Transform2d;
 
 import com.pathplanner.lib.auto.AutoBuilder;
+import com.pathplanner.lib.auto.NamedCommands;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -48,10 +49,13 @@ import com.pathplanner.lib.auto.AutoBuilder;
  */
 public class RobotContainer {
   // The robot's subsystems
-  private final DriveSubsystem m_robotDrive = new DriveSubsystem();
+  public final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
   private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
   private final SendableChooser<Command> autoChooser;
+
+
+  
 
   // The driver's controller
   Joystick m_driverController = new Joystick(OIConstants.kDriverControllerPort);
@@ -60,6 +64,8 @@ public class RobotContainer {
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
   public RobotContainer() {
+
+    NamedCommands.registerCommand("troughShot", new RunCommand( () -> m_shooter.trough(1), m_shooter).withTimeout(0.75));
     // Configure the button bindings
     configureButtonBindings();
 
@@ -97,7 +103,7 @@ public class RobotContainer {
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser("TEST");
     
-    //SmartDashboard.putData("Auto Chooser", autoChooser);
+    SmartDashboard.putData("Auto Chooser", autoChooser);
   }
 
   /**
@@ -110,6 +116,17 @@ public class RobotContainer {
    * {@link JoystickButton}.
    */
   private void configureButtonBindings() {
+    
+    new JoystickButton(m_driverController, 3)
+        .whileTrue(new RunCommand(
+            () -> m_robotDrive.changeSpeedLow(),
+            m_robotDrive));
+    
+    new JoystickButton(m_driverController, 4)
+        .whileTrue(new RunCommand(
+            () -> m_robotDrive.changeSpeedHigh(),
+              m_robotDrive));
+
     new JoystickButton(m_driverController, Button.kR1.value)
         .whileTrue(new RunCommand(
             () -> m_robotDrive.setX(),
@@ -169,15 +186,15 @@ public class RobotContainer {
           m_shooter) );
  
           new Trigger(() -> m_OperatorController.getRawButton(2))
-          .whileTrue(new RunCommand(() -> m_elevator.level1Position(9), 
+          .whileTrue(new RunCommand(() -> m_elevator.level1Position(8.2), 
           m_elevator)) ;
 
           new Trigger(() -> m_OperatorController.getRawButton(3))
-          .whileTrue(new RunCommand(() -> m_elevator.level2Position(22), 
+          .whileTrue(new RunCommand(() -> m_elevator.level2Position(20.5), 
           m_elevator)) ;
 
           new Trigger(() -> m_OperatorController.getRawButton(1))
-          .whileTrue(new RunCommand(() -> m_elevator.level0Position(3), 
+          .whileTrue(new RunCommand(() -> m_elevator.level0Position(2), 
           m_elevator)) ;
 
 

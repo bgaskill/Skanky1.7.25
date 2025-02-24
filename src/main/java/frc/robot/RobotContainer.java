@@ -29,7 +29,12 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+
 import java.util.List;
+
+import javax.xml.transform.TransformerException;
+
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.math.geometry.Transform2d;
 
@@ -76,13 +81,19 @@ public class RobotContainer {
     );
 
   
+ m_elevator.setDefaultCommand(
+  new RunCommand(
+    () -> m_elevator.elevatorControl(0), m_elevator));
 
+  
 
-    m_elevator.setDefaultCommand(
+/*m_elevator.setDefaultCommand(
       new RunCommand(
         () -> m_elevator.elevatorControl(m_OperatorController.getLeftY()),
         m_elevator)
     );
+    */
+
     // Build an auto chooser. This will use Commands.none() as the default option.
     autoChooser = AutoBuilder.buildAutoChooser("TEST");
     
@@ -144,13 +155,32 @@ public class RobotContainer {
            () ->m_shooter.laserIntake(.2), 
           m_shooter) );
  
+          new JoystickButton(m_OperatorController, 8)
+          .whileTrue
+          (new RunCommand(
+            () -> m_elevator.elevatorControl(m_OperatorController.getLeftY()),
+            m_elevator));
           
+
 
           new JoystickButton(m_OperatorController, 5)
           .whileTrue(new RunCommand(
            () ->m_shooter.reverse(.2), 
           m_shooter) );
  
+          new Trigger(() -> m_OperatorController.getRawButton(2))
+          .whileTrue(new RunCommand(() -> m_elevator.level1Position(9), 
+          m_elevator)) ;
+
+          new Trigger(() -> m_OperatorController.getRawButton(3))
+          .whileTrue(new RunCommand(() -> m_elevator.level2Position(22), 
+          m_elevator)) ;
+
+          new Trigger(() -> m_OperatorController.getRawButton(1))
+          .whileTrue(new RunCommand(() -> m_elevator.level0Position(3), 
+          m_elevator)) ;
+
+
           }
 
 

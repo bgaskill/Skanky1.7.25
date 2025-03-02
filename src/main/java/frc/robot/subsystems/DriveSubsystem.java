@@ -14,6 +14,8 @@ import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.hal.FRCNetComm.tInstances;
 import edu.wpi.first.hal.FRCNetComm.tResourceType;
 import edu.wpi.first.hal.HAL;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -30,6 +32,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.Constants;
 import frc.robot.Constants.DriveConstants;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.LimelightHelpers;;
 
 public class DriveSubsystem extends SubsystemBase {
   // Create MAXSwerveModules
@@ -90,8 +93,8 @@ public class DriveSubsystem extends SubsystemBase {
             this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
             (speeds, feedforwards) -> driveRobotRelative(speeds), // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds. Also optionally outputs individual module feedforwards
             new PPHolonomicDriveController( // PPHolonomicController is the built in path following controller for holonomic drive trains
-                    new PIDConstants(0, 0.0, 0.0), // Translation PID constants
-                    new PIDConstants(0, 0.0, 0.0) // Rotation PID constants
+                    new PIDConstants(0.1, 0.0, 0.0), // Translation PID constants
+                    new PIDConstants(4, 0.0, 0.0) // Rotation PID constants
             ),
             config, // The robot configuration
             () -> {
@@ -230,13 +233,13 @@ public class DriveSubsystem extends SubsystemBase {
 
 public void changeSpeedLow() {
 
-DriveConstants.kMaxSpeedMetersPerSecond = 1;
+DriveConstants.kMaxSpeedMetersPerSecond = 1.5;
 
 }
 
 public void changeSpeedHigh() {
 
-  DriveConstants.kMaxSpeedMetersPerSecond = 2;
+  DriveConstants.kMaxSpeedMetersPerSecond = 2.5;
   
   }
 

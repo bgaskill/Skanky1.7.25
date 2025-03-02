@@ -1,0 +1,103 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RSide"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "troughShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.01
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopTrough"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Right Side to Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.01
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "RCoral to 2nd "
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "troughShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.01
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopTrough"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "R 2nd to Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.01
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Coral to 3rd"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "troughShot"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopTrough"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

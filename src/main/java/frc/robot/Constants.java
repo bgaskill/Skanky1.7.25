@@ -61,8 +61,8 @@ public final class Constants {
 
   public static final class ShooterConstants {
     //SPARK MAX CAN IDs
-    public static final int kLeftShooterCanId = 31;
-    public static final int kRightShooterCanId = 32;
+    public static final int kLeftShooterCanId = 32;
+    public static final int kRightShooterCanId = 31;
 
 
   }
@@ -99,7 +99,7 @@ public final class Constants {
   }
 
   public static final class AutoConstants {
-    public static final double kMaxSpeedMetersPerSecond = 3;
+    public static final double kMaxSpeedMetersPerSecond = 4;
     public static final double kMaxAccelerationMetersPerSecondSquared = 3;
     public static final double kMaxAngularSpeedRadiansPerSecond = Math.PI;
     public static final double kMaxAngularSpeedRadiansPerSecondSquared = Math.PI;

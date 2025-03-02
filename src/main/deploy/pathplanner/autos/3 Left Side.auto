@@ -1,0 +1,97 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "lSide"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "troughShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.01
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopTrough"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "left side to Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.01
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L to 2nd"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "troughShot"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.01
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopTrough"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L 2nd to Coral"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.01
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "L Coral to 3rd"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "troughShot"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

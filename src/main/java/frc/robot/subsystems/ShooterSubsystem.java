@@ -30,8 +30,8 @@ public class ShooterSubsystem extends SubsystemBase{
         LaserCan.Measurement measurement = lc.getMeasurement();
         LaserCan.Measurement measurement2 = lc2.getMeasurement();
 
-        SmartDashboard.putNumber ("Laser 1",measurement.distance_mm);
-        SmartDashboard.putNumber ("Laser 2",measurement2.distance_mm);
+        //SmartDashboard.putNumber ("Laser 1",measurement.distance_mm);
+        //SmartDashboard.putNumber ("Laser 2",measurement2.distance_mm);
 
         if (measurement != null && measurement2 != null && measurement.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT
         && measurement2.status == LaserCan.LASERCAN_STATUS_VALID_MEASUREMENT 
@@ -54,6 +54,11 @@ public class ShooterSubsystem extends SubsystemBase{
 
     public void trough(double speed){
         m_leftShooter.set(speed);
+        m_rightShooter.set(-speed*0.18);
+    }
+
+    public void highShot(double speed){
+        m_leftShooter.set(speed*.2);
         m_rightShooter.set(-speed*0.2);
     }
 }

@@ -18,13 +18,14 @@ import com.ctre.phoenix6.configs.Slot0Configs;
 import com.ctre.phoenix6.configs.TalonFXConfiguration;
 import com.ctre.phoenix6.configs.TalonFXConfigurator;
 import com.ctre.phoenix6.controls.MotionMagicVoltage;
+import au.grapplerobotics.LaserCan;
 
 
 public class ElevatorSubsystem extends SubsystemBase {
   
   private final TalonFX talonElevator = new TalonFX (ElevatorConstants.kLeftElevatorCanId);
   private final TalonFX talonElevator2 = new TalonFX(ElevatorConstants.kRightElevatorCanId);
-  
+  //LaserCan lc2 = new LaserCan(39);
   
   
   /** Creates a new Elevator. */
@@ -64,9 +65,11 @@ public class ElevatorSubsystem extends SubsystemBase {
   }
 
   public void elevatorControl(double speed){
-
-    talonElevator.set(-speed);
+    //LaserCan.Measurement clear = lc2.getMeasurement();
+//if(clear.distance_mm >100){
+    talonElevator.set(-speed*.4);
     //talonElevator2.set(-speed);
+//}
 }
 public void level0Position(double position){
 
@@ -85,6 +88,16 @@ public void level2Position(double position){
   talonElevator.setControl(m_request.withPosition(position));
 
 }
+public void level3Position(double position){
 
+  final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+  talonElevator.setControl(m_request.withPosition(position));
 
+}
+public void levelMaxPosition(double position){
+
+  final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+  talonElevator.setControl(m_request.withPosition(position));
+
+}
 }

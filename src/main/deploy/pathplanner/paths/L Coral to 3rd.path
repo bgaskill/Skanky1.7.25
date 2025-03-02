@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.203521126760563,
-        "y": 2.7919894366197173
+        "x": 1.0067208904109588,
+        "y": 0.5766053082191785
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.203521126760563,
-        "y": 2.7919894366197173
+        "x": 2.006720890410959,
+        "y": 0.5766053082191789
       },
       "isLocked": false,
-      "linkedName": "lSideEnd"
+      "linkedName": "L to Coral End"
     },
     {
       "anchor": {
-        "x": 4.1689260563380275,
-        "y": 1.672359154929576
+        "x": 3.681292808219178,
+        "y": 4.002461472602739
       },
       "prevControl": {
-        "x": 3.1689260563380275,
-        "y": 1.672359154929576
+        "x": 2.681292808219178,
+        "y": 4.002461472602739
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
-    "maxVelocity": 1.0,
-    "maxAcceleration": 2.0,
+    "maxVelocity": 6.32,
+    "maxAcceleration": 2.5,
     "maxAngularVelocity": 720.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,
@@ -48,7 +48,7 @@
   "folder": null,
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 118.81079374297312
+    "rotation": 49.76364169072613
   },
   "useDefaultConstraints": true
 }

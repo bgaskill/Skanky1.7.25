@@ -23,6 +23,7 @@ import frc.robot.Constants.DriveConstants;
 import frc.robot.Constants.OIConstants;
 import frc.robot.subsystems.DriveSubsystem;
 import frc.robot.subsystems.ElevatorSubsystem;
+import frc.robot.subsystems.PokerSubsystem;
 import frc.robot.subsystems.ShooterSubsystem;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
@@ -32,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.SwerveControllerCommand;
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj2.command.button.JoystickButton;
+import edu.wpi.first.wpilibj2.command.button.POVButton;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import java.util.List;
@@ -43,6 +45,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.path.PathConstraints;
 
 /*
  * This class is where the bulk of the robot should be declared.  Since Command-based is a
@@ -55,6 +58,7 @@ public class RobotContainer {
   public final DriveSubsystem m_robotDrive = new DriveSubsystem();
   private final ShooterSubsystem m_shooter = new ShooterSubsystem();
   private final ElevatorSubsystem m_elevator = new ElevatorSubsystem();
+  private final PokerSubsystem m_pokey = new PokerSubsystem();
   private final SendableChooser<Command> autoChooser;
 
 
@@ -72,7 +76,16 @@ public class RobotContainer {
     -> m_shooter.trough(1), m_shooter).withTimeout(0.5).withName("troughShot"));
 
     NamedCommands.registerCommand("stopTrough", new RunCommand( () 
-    -> m_shooter.trough(0), m_shooter).withTimeout(.1).withName("stopTrough"));
+    -> m_shooter.trough(0), m_shooter).withTimeout(.02).withName("stopTrough"));
+
+    NamedCommands.registerCommand("shoot", new RunCommand( () 
+    -> m_shooter.shoot(1), m_shooter).withTimeout(.5).withName("shoot"));
+
+    NamedCommands.registerCommand("elevatorLvl1", new RunCommand( () 
+    -> m_elevator.level1Position(8.2), m_elevator).withTimeout(0.1).withName("elavatorLvl1"));
+
+    NamedCommands.registerCommand("elevatorLvl0", new RunCommand( () 
+    -> m_elevator.level0Position(2), m_elevator).withName("elavatorLvl0"));
 
 
     // Configure default commands
@@ -88,7 +101,7 @@ public class RobotContainer {
             m_robotDrive));
     m_shooter.setDefaultCommand(
       new RunCommand(
-      () -> m_shooter.shoot(m_OperatorController.getRawAxis(3)),
+      () -> m_shooter.shoot(m_OperatorController.getRawAxis(3)*.2),
       m_shooter)
     );
 
@@ -97,7 +110,9 @@ public class RobotContainer {
   new RunCommand(
     () -> m_elevator.elevatorControl(0), m_elevator));
 
-  
+  m_pokey.setDefaultCommand(
+    new RunCommand(
+      () -> m_pokey.pokeyRotate(0),m_pokey));
 
 /*m_elevator.setDefaultCommand(
       new RunCommand(
@@ -157,7 +172,7 @@ public class RobotContainer {
         p3Filter.calculate(LLPoseI[2]);
         p4Filter.calculate(LLPoseI[3]);
       }
-      , m_robotDrive).withTimeout(0.1).andThen(
+      , m_robotDrive).withTimeout(0.2).andThen(
       new InstantCommand(() -> {
       double[] LLPoseT = LimelightHelpers.getTargetPose_RobotSpace("limelight");
       double[] LLPose = {
@@ -166,12 +181,17 @@ public class RobotContainer {
         p3Filter.calculate(LLPoseT[2]),
         p4Filter.calculate(LLPoseT[3])
       };
-      Pose2d LLPose2d = new Pose2d(LLPose[2], LLPose[0], Rotation2d.fromRadians(LLPose[3]));
+      Pose2d LLPose2d = new Pose2d(LLPose[2], LLPose[0], Rotation2d.fromDegrees(LLPose[3]));
       AutoBuilder.followPath(
         PathplannerUTILS.createLLPath(
           m_robotDrive.getPose(), 
-          m_robotDrive.getPose().plus(new Transform2d(LLPose2d.getX()-0.2, LLPose2d.getY(), Rotation2d.fromDegrees(0))))
+          m_robotDrive.getPose().plus(new Transform2d(LLPose2d.getX(), LLPose2d.getY(), Rotation2d.fromDegrees(0))))
           ).schedule();
+        /*AutoBuilder.pathfindToPose(
+          m_robotDrive.getPose().plus(
+            new Transform2d(LLPose2d.getX(), LLPose2d.getY(), Rotation2d.fromDegrees(0))), 
+            new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI)).schedule();*/
+      
     })).schedule();
       
         }));
@@ -206,15 +226,8 @@ new JoystickButton(m_driverController,11)
  
           new JoystickButton(m_OperatorController, 6)
           .whileTrue(new RunCommand(
-           () ->m_shooter.laserIntake(.25), 
-          m_shooter) );
- 
-          new JoystickButton(m_OperatorController, 7)
-          .whileTrue
-          (new RunCommand(
-            () -> m_elevator.elevatorControl(m_OperatorController.getLeftY()),
-            m_elevator));
-          
+           () ->m_shooter.laserIntake(.21), 
+          m_shooter) );      
 
 
           new JoystickButton(m_OperatorController, 5)
@@ -222,6 +235,13 @@ new JoystickButton(m_driverController,11)
            () ->m_shooter.reverse(.2), 
           m_shooter) );
  
+          new JoystickButton(m_OperatorController, 7)
+          .whileTrue(new RunCommand(
+           () ->m_pokey.pokeyRotate(.4
+           ), 
+          m_pokey) );
+ 
+
           new Trigger(() -> m_OperatorController.getRawButton(2))
           .whileTrue(new RunCommand(() -> m_elevator.level1Position(8.2), 
           m_elevator)) ;
@@ -235,13 +255,29 @@ new JoystickButton(m_driverController,11)
           m_elevator)) ;
 
           new Trigger(() -> m_OperatorController.getRawButton(4))
-          .whileTrue(new RunCommand(() -> m_elevator.level3Position(42), 
+          .whileTrue(new RunCommand(() -> m_elevator.level3Position(43), 
           m_elevator)) ;
           
 
           new Trigger(() -> m_OperatorController.getRawButton(8))
           .whileTrue(new RunCommand(() -> m_elevator.levelMaxPosition(45), 
           m_elevator)) ;
+
+          new Trigger( () -> m_OperatorController.getPOV() == 180)
+          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(-0.3), 
+          m_pokey)) ;
+
+          new Trigger( () -> m_OperatorController.getPOV() == 90)
+          .whileTrue(new RunCommand(() -> m_pokey.pokeLow(), 
+          m_pokey)) ;
+
+          new Trigger( () -> m_OperatorController.getPOV() == 0)
+          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(0.3), 
+          m_pokey)) ;
+
+          new Trigger( () -> m_OperatorController.getPOV() == 270)
+          .whileTrue(new RunCommand(() -> m_pokey.pokeReset(), 
+          m_pokey)) ;
           }
         
   /**

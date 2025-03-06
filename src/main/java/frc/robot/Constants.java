@@ -74,6 +74,14 @@ public final class Constants {
 
   }
 
+  public static final class PokerConstants {
+    //SPARK MAX CAN IDS
+    public static final int kPokerID = 35;
+    //number of motor rotations necessary to make a full rotation of poker
+    public static final double fullRot = 278.479533;
+    public static final double rotToDeg = 360/fullRot;
+  }
+
 
   public static final class ModuleConstants {
     // The MAXSwerve module can be configured with one of three pinion gears: 12T,

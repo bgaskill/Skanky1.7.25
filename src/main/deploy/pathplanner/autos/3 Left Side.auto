@@ -11,15 +11,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "troughShot"
+            "waitTime": 0.2
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 0.01
+            "name": "troughShot"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.01
+            "waitTime": 0.1
           }
         },
         {
@@ -47,15 +47,15 @@
           }
         },
         {
-          "type": "named",
+          "type": "wait",
           "data": {
-            "name": "troughShot"
+            "waitTime": 0.2
           }
         },
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 0.01
+            "name": "troughShot"
           }
         },
         {
@@ -73,13 +73,19 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.01
+            "waitTime": 0.1
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "L Coral to 3rd"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.2
           }
         },
         {

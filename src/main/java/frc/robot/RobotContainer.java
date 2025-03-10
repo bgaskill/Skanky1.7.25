@@ -73,7 +73,7 @@ public class RobotContainer {
   public RobotContainer() {
 
     NamedCommands.registerCommand("troughShot", new RunCommand( () 
-    -> m_shooter.trough(1), m_shooter).withTimeout(0.5).withName("troughShot"));
+    -> m_shooter.trough(1), m_shooter).withTimeout(0.75).withName("troughShot"));
 
     NamedCommands.registerCommand("stopTrough", new RunCommand( () 
     -> m_shooter.trough(0), m_shooter).withTimeout(.02).withName("stopTrough"));
@@ -86,6 +86,9 @@ public class RobotContainer {
 
     NamedCommands.registerCommand("elevatorLvl0", new RunCommand( () 
     -> m_elevator.level0Position(2), m_elevator).withName("elavatorLvl0"));
+
+    NamedCommands.registerCommand("laserIntake", new RunCommand( () 
+    -> m_shooter.laserIntake(.21), m_shooter).withTimeout(1).withName("laserIntake"));
 
 
     // Configure default commands
@@ -232,12 +235,12 @@ new JoystickButton(m_driverController,11)
 
           new JoystickButton(m_OperatorController, 5)
           .whileTrue(new RunCommand(
-           () ->m_shooter.reverse(.2), 
+           () ->m_shooter.reverse(.6), 
           m_shooter) );
  
           new JoystickButton(m_OperatorController, 7)
           .whileTrue(new RunCommand(
-           () ->m_pokey.pokeyRotate(.4
+           () ->m_pokey.pokeyRotate(.6
            ), 
           m_pokey) );
  
@@ -247,7 +250,7 @@ new JoystickButton(m_driverController,11)
           m_elevator)) ;
 
           new Trigger(() -> m_OperatorController.getRawButton(3))
-          .whileTrue(new RunCommand(() -> m_elevator.level2Position(22), 
+          .whileTrue(new RunCommand(() -> m_elevator.level2Position(21), 
           m_elevator)) ;
 
           new Trigger(() -> m_OperatorController.getRawButton(1))
@@ -255,7 +258,7 @@ new JoystickButton(m_driverController,11)
           m_elevator)) ;
 
           new Trigger(() -> m_OperatorController.getRawButton(4))
-          .whileTrue(new RunCommand(() -> m_elevator.level3Position(43), 
+          .whileTrue(new RunCommand(() -> m_elevator.level3Position(41), 
           m_elevator)) ;
           
 
@@ -264,7 +267,7 @@ new JoystickButton(m_driverController,11)
           m_elevator)) ;
 
           new Trigger( () -> m_OperatorController.getPOV() == 180)
-          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(-0.3), 
+          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(-0.25), 
           m_pokey)) ;
 
           new Trigger( () -> m_OperatorController.getPOV() == 90)
@@ -272,7 +275,7 @@ new JoystickButton(m_driverController,11)
           m_pokey)) ;
 
           new Trigger( () -> m_OperatorController.getPOV() == 0)
-          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(0.3), 
+          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(0.25), 
           m_pokey)) ;
 
           new Trigger( () -> m_OperatorController.getPOV() == 270)

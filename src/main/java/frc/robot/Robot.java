@@ -31,7 +31,7 @@ public class Robot extends TimedRobot {
     // Instantiate our RobotContainer.  This will perform all our button bindings, and put our
     // autonomous chooser on the dashboard.
     m_robotContainer = new RobotContainer();
-    CameraServer.startAutomaticCapture();
+    //CameraServer.startAutomaticCapture();
     CanBridge.runTCP(); // allows grapplehook to talk to rio
   }
 
@@ -49,11 +49,6 @@ public class Robot extends TimedRobot {
     // and running subsystem periodic() methods.  This must be called from the robot's periodic
     // block in order for anything in the Command-based framework to work.
     CommandScheduler.getInstance().run();
-    double[] LLPose = LimelightHelpers.getTargetPose_RobotSpace("limelight");
-      SmartDashboard.putNumber("1", LLPose[0]); SmartDashboard.putNumber("DistY", LLPose[1]);
-      SmartDashboard.putNumber("4", LLPose[3]);
-      SmartDashboard.putNumber("3", LLPose[2]);
-      SmartDashboard.putNumber("2", LLPose[1]);
 
   }
 

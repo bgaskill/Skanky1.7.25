@@ -71,33 +71,38 @@ public class ElevatorSubsystem extends SubsystemBase {
     //talonElevator2.set(-speed);
 //}
 }
-public void level0Position(double position){
 
+public void elevatorDown(){
   final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
-  talonElevator.setControl(m_request.withPosition(position));
+  talonElevator.setControl(m_request.withPosition(0));
 }
-public void level1Position(double position){
+public void level0Position(){
 
   final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
-  talonElevator.setControl(m_request.withPosition(position));
-
+  talonElevator.setControl(m_request.withPosition(2));
 }
-public void level2Position(double position){
+public void level1Position(){
 
   final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
-  talonElevator.setControl(m_request.withPosition(position));
-
-}
-public void level3Position(double position){
-
-  final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
-  talonElevator.setControl(m_request.withPosition(position));
+  talonElevator.setControl(m_request.withPosition(8.2));
 
 }
-public void levelMaxPosition(double position){
+public void level2Position(){
 
   final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
-  talonElevator.setControl(m_request.withPosition(position));
+  talonElevator.setControl(m_request.withPosition(21));
+
+}
+public void level3Position(){
+
+  final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+  talonElevator.setControl(m_request.withPosition(43.5));
+
+}
+public void levelMaxPosition(){
+
+  final MotionMagicVoltage m_request = new MotionMagicVoltage(0);
+  talonElevator.setControl(m_request.withPosition(45));
 
 }
 }

@@ -7,6 +7,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
 
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Constants.PokerConstants;
@@ -15,6 +16,7 @@ public class PokerSubsystem extends SubsystemBase {
 
   SparkMax pokeyMotor = new SparkMax(35, MotorType.kBrushless);
   RelativeEncoder pokeyEncoder = pokeyMotor.getEncoder();
+  PIDController pokeyPID = new PIDController(0.04, 0, 0);
 
     /** Creates a new PokerSubsystem. */
   public PokerSubsystem() {}
@@ -29,17 +31,15 @@ public class PokerSubsystem extends SubsystemBase {
     pokeyMotor.set(speed);
   }
 
-  public void pokeSet(double currentPos, double targetPos, double kP){
-    if (Math.abs(currentPos-targetPos) > kP*targetPos){ 
-      if ((currentPos-targetPos) > (180/PokerConstants.rotToDeg - targetPos) ){ pokeyRotate(0.2); }else{ pokeyRotate(-0.2); }
-    }
+  public void pokeSet(double currentPos, double targetPos){
+    pokeyMotor.set(pokeyPID.calculate(pokeyEncoder.getPosition(), targetPos));
   }
 
-  public void pokeZero() { pokeSet(pokeyEncoder.getPosition(), 0, 0.05); };
+  public void pokeZero() { pokeSet(pokeyEncoder.getPosition(), 0); };
 
-  public void pokeLow() { pokeSet(pokeyEncoder.getPosition(), 208.774338, 0.05); }
+  public void pokeLow() { pokeSet(pokeyEncoder.getPosition(), 208.774338); }
 
-  public void pokeHigh() { pokeSet(pokeyEncoder.getPosition(), 183.325134, 0.05); }
+  public void pokeHigh() { pokeSet(pokeyEncoder.getPosition(), 183.325134); }
 
   public void pokeReset() { pokeyEncoder.setPosition(0);}
 

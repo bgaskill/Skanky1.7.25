@@ -5,74 +5,19 @@
     "data": {
       "commands": [
         {
-          "type": "path",
-          "data": {
-            "pathName": "RSide"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "troughShot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.01
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "stopTrough"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Right Side to Coral"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.3
-          }
-        },
-        {
           "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "RCoral to 2nd "
+                  "pathName": "Levld coral #1"
                 }
               },
               {
-                "type": "sequential",
+                "type": "named",
                 "data": {
-                  "commands": [
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "laserIntake"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "stopTrough"
-                      }
-                    }
-                  ]
+                  "name": "elevatorLvl3"
                 }
               }
             ]
@@ -87,13 +32,7 @@
         {
           "type": "named",
           "data": {
-            "name": "troughShot"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.01
+            "name": "shoot"
           }
         },
         {
@@ -103,15 +42,39 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "elevatorLvl0"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "elevatorDown"
+          }
+        },
+        {
           "type": "path",
           "data": {
-            "pathName": "R 2nd to Coral"
+            "pathName": "coral #1 to source"
           }
         },
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.3
+            "waitTime": 1.0
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "laserIntake"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "stopTrough"
           }
         },
         {
@@ -119,9 +82,16 @@
           "data": {
             "commands": [
               {
-                "type": "path",
+                "type": "sequential",
                 "data": {
-                  "pathName": "Coral to 3rd"
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "Lvld coral #2"
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -131,13 +101,7 @@
                     {
                       "type": "named",
                       "data": {
-                        "name": "laserIntake"
-                      }
-                    },
-                    {
-                      "type": "named",
-                      "data": {
-                        "name": "stopTrough"
+                        "name": "elevatorLvl3"
                       }
                     }
                   ]
@@ -149,19 +113,50 @@
         {
           "type": "wait",
           "data": {
-            "waitTime": 0.1
+            "waitTime": 1.5
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "troughShot"
+            "name": "shoot"
           }
         },
         {
           "type": "named",
           "data": {
-            "name": "stopTrough"
+            "name": "elevatorLvl0"
+          }
+        },
+        {
+          "type": "parallel",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "coral #2 to source"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "elevatorDown"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "laserIntake"
           }
         }
       ]

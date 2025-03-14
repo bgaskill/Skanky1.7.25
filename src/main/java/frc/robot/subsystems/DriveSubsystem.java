@@ -233,7 +233,7 @@ public class DriveSubsystem extends SubsystemBase {
 
 public void changeSpeedLow() {
 
-DriveConstants.kMaxSpeedMetersPerSecond = 2.5;
+DriveConstants.kMaxSpeedMetersPerSecond = 1.5;
 
 }
 

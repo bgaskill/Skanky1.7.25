@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.1509512069283687,
-        "y": 7.426202298054228
+        "x": 1.0955415208203436,
+        "y": 7.392441953649144
       },
       "isLocked": false,
       "linkedName": "RCoralEnd"
     },
     {
       "anchor": {
-        "x": 3.868977272727273,
-        "y": 4.972301136363636
+        "x": 3.4388257575757577,
+        "y": 5.4988005050505055
       },
       "prevControl": {
-        "x": 3.312067708258353,
-        "y": 5.33522491406885
+        "x": 3.015807681606791,
+        "y": 5.843226390536321
       },
       "nextControl": null,
       "isLocked": false,
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 6.32,
-    "maxAcceleration": 2.5,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 720.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

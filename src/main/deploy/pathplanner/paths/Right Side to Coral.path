@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.7065909090909095,
-        "y": 5.151789772727272
+        "x": 4.82114898989899,
+        "y": 5.447979797979797
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9957596282726979,
-        "y": 7.268324463764092
+        "x": 1.1103177090807788,
+        "y": 7.5645144890166165
       },
       "isLocked": true,
       "linkedName": "RSideEnd"
@@ -34,7 +34,7 @@
   "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 6.32,
-    "maxAcceleration": 2.5,
+    "maxAcceleration": 5.0,
     "maxAngularVelocity": 720.0,
     "maxAngularAcceleration": 720.0,
     "nominalVoltage": 12.0,

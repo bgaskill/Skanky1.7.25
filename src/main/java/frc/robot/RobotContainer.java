@@ -81,15 +81,36 @@ public class RobotContainer {
     NamedCommands.registerCommand("shoot", new RunCommand( () 
     -> m_shooter.shoot(1), m_shooter).withTimeout(.5).withName("shoot"));
 
-    NamedCommands.registerCommand("elevatorLvl1", new RunCommand( () 
-    -> m_elevator.level1Position(8.2), m_elevator).withTimeout(0.1).withName("elavatorLvl1"));
-
     NamedCommands.registerCommand("elevatorLvl0", new RunCommand( () 
-    -> m_elevator.level0Position(2), m_elevator).withName("elavatorLvl0"));
+    -> m_elevator.level0Position(), m_elevator).withTimeout(0.1).withName("elavatorLvl0"));
+
+    NamedCommands.registerCommand("elevatorLvl1", new RunCommand( () 
+    -> m_elevator.level1Position(), m_elevator).withTimeout(0.1).withName("elavatorLvl1"));
+
+    NamedCommands.registerCommand("elevatorLvl2", new RunCommand( () 
+    -> m_elevator.level2Position(), m_elevator).withTimeout(0.1).withName("elavatorLvl2"));
+
+    NamedCommands.registerCommand("elevatorLvl3", new RunCommand( () 
+    -> m_elevator.level3Position(), m_elevator).withTimeout(0.1).withName("elavatorLvl3"));
+
+    NamedCommands.registerCommand("elevatorDown",  new RunCommand( () 
+    -> m_elevator.elevatorDown(), m_elevator).withTimeout(0.1).withName("elavatorLvl3"));
+    
 
     NamedCommands.registerCommand("laserIntake", new RunCommand( () 
-    -> m_shooter.laserIntake(.21), m_shooter).withTimeout(1).withName("laserIntake"));
+    -> m_shooter.laserIntake(.21), m_shooter).withTimeout(1.25).withName("laserIntake"));
 
+    NamedCommands.registerCommand("pokeyALow", new RunCommand( () 
+    -> m_pokey.pokeLow(), m_pokey).withTimeout(1.5).withName("pokeyALow"));
+
+    NamedCommands.registerCommand("pokeyAHigh", new RunCommand( () 
+    -> m_pokey.pokeHigh(), m_pokey).withTimeout(1.5).withName("pokeyAHigh"));
+    
+    NamedCommands.registerCommand("pokeyDown", new RunCommand( () 
+    -> m_pokey.pokeyRotate(0.75), m_pokey).withTimeout(0.75).withName("pokeyDown"));
+
+    NamedCommands.registerCommand("pokeyHigh", new RunCommand( () 
+    -> m_pokey.pokeyRotate(-0.75), m_pokey).withTimeout(0.75).withName("pokeyHigh"));
 
     // Configure default commands
     m_robotDrive.setDefaultCommand(
@@ -184,15 +205,16 @@ public class RobotContainer {
         p3Filter.calculate(LLPoseT[2]),
         p4Filter.calculate(LLPoseT[3])
       };
+      
       Pose2d LLPose2d = new Pose2d(LLPose[2], LLPose[0], Rotation2d.fromDegrees(LLPose[3]));
       AutoBuilder.followPath(
         PathplannerUTILS.createLLPath(
           m_robotDrive.getPose(), 
-          m_robotDrive.getPose().plus(new Transform2d(LLPose2d.getX(), LLPose2d.getY(), Rotation2d.fromDegrees(0))))
+          m_robotDrive.getPose().plus(new Transform2d(0, -LLPose2d.getY()-0.03077, Rotation2d.fromDegrees(0))))
           ).schedule();
         /*AutoBuilder.pathfindToPose(
           m_robotDrive.getPose().plus(
-            new Transform2d(LLPose2d.getX(), LLPose2d.getY(), Rotation2d.fromDegrees(0))), 
+            new Transform2d(0, LLPose2d.getY(), Rotation2d.fromDegrees(0))), 
             new PathConstraints(3.0, 3.0, 2 * Math.PI, 4 * Math.PI)).schedule();*/
       
     })).schedule();
@@ -237,37 +259,30 @@ new JoystickButton(m_driverController,11)
           .whileTrue(new RunCommand(
            () ->m_shooter.reverse(.6), 
           m_shooter) );
- 
-          new JoystickButton(m_OperatorController, 7)
-          .whileTrue(new RunCommand(
-           () ->m_pokey.pokeyRotate(.6
-           ), 
-          m_pokey) );
- 
 
           new Trigger(() -> m_OperatorController.getRawButton(2))
-          .whileTrue(new RunCommand(() -> m_elevator.level1Position(8.2), 
+          .whileTrue(new RunCommand(() -> m_elevator.level1Position(), 
           m_elevator)) ;
 
           new Trigger(() -> m_OperatorController.getRawButton(3))
-          .whileTrue(new RunCommand(() -> m_elevator.level2Position(21), 
+          .whileTrue(new RunCommand(() -> m_elevator.level2Position(), 
           m_elevator)) ;
 
           new Trigger(() -> m_OperatorController.getRawButton(1))
-          .whileTrue(new RunCommand(() -> m_elevator.level0Position(2), 
+          .whileTrue(new RunCommand(() -> m_elevator.level0Position(), 
           m_elevator)) ;
 
           new Trigger(() -> m_OperatorController.getRawButton(4))
-          .whileTrue(new RunCommand(() -> m_elevator.level3Position(41), 
+          .whileTrue(new RunCommand(() -> m_elevator.level3Position(), 
           m_elevator)) ;
           
 
-          new Trigger(() -> m_OperatorController.getRawButton(8))
-          .whileTrue(new RunCommand(() -> m_elevator.levelMaxPosition(45), 
-          m_elevator)) ;
+          /*new Trigger(() -> m_OperatorController.getRawButton(8))
+          .whileTrue(new RunCommand(() -> m_elevator.levelMaxPosition(), 
+          m_elevator)) ;*/
 
           new Trigger( () -> m_OperatorController.getPOV() == 180)
-          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(-0.25), 
+          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(0.75), 
           m_pokey)) ;
 
           new Trigger( () -> m_OperatorController.getPOV() == 90)
@@ -275,13 +290,23 @@ new JoystickButton(m_driverController,11)
           m_pokey)) ;
 
           new Trigger( () -> m_OperatorController.getPOV() == 0)
-          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(0.25), 
+          .whileTrue(new RunCommand(() -> m_pokey.pokeyRotate(-0.75), 
           m_pokey)) ;
 
           new Trigger( () -> m_OperatorController.getPOV() == 270)
-          .whileTrue(new RunCommand(() -> m_pokey.pokeReset(), 
+          .whileTrue(new RunCommand(() -> m_pokey.pokeHigh(), 
           m_pokey)) ;
+
+          new JoystickButton(m_OperatorController, 7)
+          .whileTrue(new RunCommand(() ->m_pokey.pokeZero(), 
+          m_pokey) );
+
+          new JoystickButton(m_OperatorController, 8)
+          .whileTrue(new RunCommand(() ->m_pokey.pokeReset(), 
+          m_pokey) );
           }
+
+          
         
   /**
    * Use this to pass the autonomous command to the main {@link Robot} class.

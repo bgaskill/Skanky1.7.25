@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.591138698630137,
-        "y": 2.815432363013698
+        "x": 0.8076988636377043,
+        "y": 7.874034090911026
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.059789922008308,
-        "y": 3.140610998054166
+        "x": 1.8076988636377036,
+        "y": 7.87403409091103
       },
       "isLocked": false,
-      "linkedName": "L 2nd End"
+      "linkedName": "source1End"
     },
     {
       "anchor": {
-        "x": 1.0067208904109588,
-        "y": 0.5766053082191785
+        "x": 4.934090909090909,
+        "y": 5.36439393939394
       },
       "prevControl": {
-        "x": 0.802711926330061,
-        "y": 0.4321049878920631
+        "x": 5.790662878787877,
+        "y": 6.1967140151515165
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "L to Coral End"
+      "linkedName": "lvld coral #2 end"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 49.76364169072613
+    "rotation": -119.99999999999999
   },
   "reversed": false,
-  "folder": "Left Trough",
+  "folder": "Lvl 4 Right",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 57.030596096537856
+    "rotation": -54.727578551401635
   },
   "useDefaultConstraints": true
 }

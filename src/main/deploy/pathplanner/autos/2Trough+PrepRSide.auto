@@ -145,24 +145,6 @@
               }
             ]
           }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 0.1
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "troughShot"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "stopTrough"
-          }
         }
       ]
     }
